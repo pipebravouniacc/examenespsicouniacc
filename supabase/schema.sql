@@ -98,7 +98,7 @@ $$;
 create or replace function proteger_privilegios() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
-  if not es_admin_actual() then
+  if auth.uid() is not null and not es_admin_actual() then
     if tg_op = 'INSERT' then
       new.es_admin := false;
       new.habilitado := false;
